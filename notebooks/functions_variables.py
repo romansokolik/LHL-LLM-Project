@@ -1,19 +1,28 @@
 # Description: Functions for text transformation and analysis.
-import re
+import pandas as pd
+import re, json, nltk, torch
 from pprint import pprint
-from datasets import load_dataset, DatasetDict
-import nltk
+from datasets import load_dataset, DatasetDict, Dataset
 from nltk import PorterStemmer, WordNetLemmatizer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from textblob import TextBlob
 # import the specific tokenizer and model
 from transformers import BertTokenizer, BertModel
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import DistilBertTokenizer, DistilBertModel, DistilBertForSequenceClassification
+from transformers import pipeline
+from transformers import AutoModelForQuestionAnswering, TrainingArguments, Trainer
+from sklearn.metrics import classification_report
+
+# Check if MPS is available
+if torch.backends.mps.is_available():
+    device = torch.device("mps:0")  # Use MPS (Metal Performance Shaders)
+else:
+    device = torch.device("cpu")  # Fallback to CPU
 
 # Variables
 set_names = ['train', 'test', 'unsupervised']
-limit = 10  # 25000 for the full dataset
-sample_size = 1
 
 
 def view_apply_function(ds, lim=1, fun=None, names=set_names, pp=False):
@@ -95,6 +104,11 @@ def remove_emojis(ds):
     )
     # Remove emojis from the text column in the dataset
     ds['text'] = emoji_pattern.sub(r' ', ds['text'])
+    return ds
+
+
+def to_lower_case(ds):
+    ds['text'] = ds['text'].lower()
     return ds
 
 

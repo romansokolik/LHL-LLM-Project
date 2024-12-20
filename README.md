@@ -43,7 +43,7 @@ I will be fine-tuning the roBERT model on the IMDB movie reviews dataset using t
 - output_dir='./models'
 - overwrite_output_dir=False
 - num_train_epochs=2
-- per_device_train_batch_size=8
+- per_device_train_batch_size=24
 - per_device_eval_batch_size=8
 - warmup_steps=500
 - weight_decay=0.01
@@ -69,5 +69,13 @@ I will be fine-tuning the DistilBERT model on the IMDB movie reviews dataset usi
 - Early Stopping: True
 - Early Stopping Patience: 3
 - Early Stopping Delta: 0.01
+
+## Results
+
+## References
+#### https://huggingface.co/docs/transformers/v4.38.2/en/main_classes/pipelines#transformers.pipeline
+#### look at the pipeline() function documentation from hugging face
+#### model selection
+#### https://huggingface.co/transformers/v2.9.1/pretrained_models.html
 
 
